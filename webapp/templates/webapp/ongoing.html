@@ -1,0 +1,83 @@
+{% extends 'webapp/base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+    <div class="container-fluid">
+        <br>
+        <div class="row">
+            <div class="col-md-12">
+                <h3 style="font-weight: bold; font-size: 24px;">On-Going Tasks</h3>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <table class="table table-hover table-bordered">
+
+                <thead class="table-light">
+        
+                    <tr>
+                        <th scope="col"> Date </th>
+                        <th scope="col"> Delivery Man </th>
+                        <th scope="col"> Client Address </th>
+                        <th scope="col"> Client Name </th>
+                        <th scope="col"> Client Phone </th>
+                        <th scope="col"> Price </th>
+                    </tr>
+        
+                </thead>
+        
+                <tbody>
+        
+                    {% if on_going_tasks %}
+                        {% for task in on_going_tasks %}
+                            <tr>
+                                <td>{{ task.creation_date }}</td>
+                                <td>{{ task.delivery_man }}</td>
+                                <td>{{ task.client_address }}</td>
+                                <td>{{ task.client_name }}</td>
+                                <td>{{ task.client_phone }}</td>
+                                <td>{{ task.price }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="7">No ongoing tasks found.</td>
+                        </tr>
+                    {% endif %}
+        
+        
+                </tbody>
+        
+        
+            </table>
+        </div>
+    </div>
+    <hr>
+
+    <style>
+        .greeting-container {
+            padding: 15px 0; 
+            margin-bottom: 15px;
+        }
+        .more-button {
+            float: right; 
+            margin-bottom: 10px;
+        }
+        .custom-card {
+            width: 98%; 
+        }
+    </style>
+
+    <script>
+        document.querySelectorAll('.more-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const moreInfo = button.parentElement.querySelector('.more-info');
+                moreInfo.style.display = moreInfo.style.display === 'none' ? 'block' : 'none';
+                button.textContent = moreInfo.style.display === 'none' ? 'Show more' : 'Show less'; 
+            });
+        });
+    </script>
+
+{% endblock %}

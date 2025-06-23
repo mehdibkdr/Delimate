@@ -1,0 +1,76 @@
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/navbar.css' %}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="row">
+    <div class="sidebar">
+      <div class="menu-btn"><i class="ph-bold ph-caret-left"></i></div>
+      <div class="head">
+        <div class="user-details">
+          <h1 class="name">DeliMate</h1>
+        </div>
+      </div>
+       <div class="nav">
+        <div class="menu">
+        
+            &nbsp;     &nbsp;     &nbsp; 
+  
+            {% if user.is_authenticated %}
+
+          <ul>
+            <li><a href="{% url 'create-record' %}"><i class="icon ph-bold ph-plus"></i><span class="text">Add Task</span></a></li>
+        </div>
+        <div class="menu">
+          <ul>
+            <li><a href="{% url 'dashboard' %}"><i class="icon ph-bold ph-house-simple"></i><span class="text">Dashboard</span></a></li>
+            <li><a href="{% url 'ongoing' %}"><i class="icon ph-bold ph-file-text"></i><span class="text">On-Going</span></a></li>
+            <li><a href="{% url 'completed' %}"><i class="icon ph-bold ph-calendar-check"></i><span class="text">Completed</span></a></li>
+            <li><a href="{% url 'deliverers_dashboard' %}"><i class="icon ph-bold ph-person"></i></i><span class="text">Our Deliverers</span></a></li>
+          </ul>
+        </div>
+
+        &nbsp;     &nbsp;     &nbsp; 
+
+      </div>
+      <div class="menu">
+        <ul>
+          <li><a href="{% url 'user-logout' %}"><i class="icon ph-bold ph-sign-out"></i><span class="text">Logout</span></a></li>
+        </ul>
+
+        {% else %}
+  
+        <li class="nav-item">
+  
+          <a class="nav-link" href="{% url 'register' %}"> Register </a>
+  
+        </li>
+  
+  
+        &nbsp;     &nbsp;     &nbsp; 
+  
+  
+        <li class="nav-item">
+  
+          <a class="nav-link" href="{% url 'my-login' %}">Login</a>
+  
+        </li>
+  
+  
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.js" integrity="sha512-8Z5++K1rB3U+USaLKG6oO8uWWBhdYsM3hmdirnOEWp8h2B1aOikj5zBzlXs8QOrvY9OxEnD2QDkbSKKpfqcIWw==" crossorigin="anonymous"></script>
+  <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

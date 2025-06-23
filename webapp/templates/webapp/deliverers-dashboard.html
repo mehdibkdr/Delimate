@@ -1,0 +1,103 @@
+{% extends 'webapp/base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+    <div class="container-fluid greeting-container">
+        <br>
+        <div class="row justify-content-end"> 
+            <div class="col-md-6 col-lg-4"> 
+                <div class="text-right"> 
+                    <a href="{% url 'create_deliverer' %}" class="btn" style="margin-right: 20px; background-color: #BA5112; border-color: #BA5112; color: rgb(0, 0, 0);">
+                        <i class="icon ph-bold ph-plus"></i><strong>  Create Deliverer</strong> &nbsp;
+                    </a>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-12">
+                <h3 style="font-weight: bold; font-size: 24px;">Our Deliverers</h3>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <table class="table table-hover table-bordered">
+
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col"> Full Name </th>
+                        <th scope="col"> Age </th>
+                        <th scope="col"> Address </th>
+                        <th scope="col"> Phone Number </th>
+                        <th scope="col"> Working Status </th>
+                        <th scope="col"> Actions </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if deliverers %}
+                        {% for deliverer in deliverers %}
+                            <tr>
+                                <td> {{ deliverer.full_name }} </td>
+                                <td> {{ deliverer.age }} </td>
+                                <td> {{ deliverer.address }} </td>
+                                <td> {{ deliverer.phone_number }} </td>
+                                <td>
+                                    {% if deliverer.is_working %}
+                                        <span style="color: #BA5112;"><strong>On a delivery</strong></span>
+                                    {% else %}
+                                        <span style="color: #EDB046;"><strong>Available</strong></span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a class="btn btn-sm btn-info" href="{% url 'view_deliverer' deliverer.id %}" style="width: 90px; background-color: #EDB046; border-color: #EDB046; color: rgb(0, 0, 0);">
+                                        <i class="fa fa-eye" aria-hidden="true"></i> View
+                                    </a>
+                                    <a class="btn btn-sm btn-warning" href="{% url 'update_deliverer' deliverer.id %}" style="width: 90px; background-color: #EDB046; border-color: #EDB046; color: rgb(0, 0, 0);">
+                                        <i class="fa fa-pencil" aria-hidden="true"></i> Update
+                                    </a>
+                                    <a class="btn btn-sm btn-danger" href="{% url 'delete_deliverer' deliverer.id %}" style="width: 90px; background-color: #BA5112; border-color: #BA5112; color: rgb(0, 0, 0);">
+                                        <i class="fa fa-trash" aria-hidden="true"></i> Delete
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="6"> No deliverers found. </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+        
+        
+            </table>
+        </div>
+    </div>
+    <hr>
+
+    <style>
+        .greeting-container {
+            padding: 15px 0; 
+            margin-bottom: 15px;
+        }
+        .more-button {
+            float: right; 
+            margin-bottom: 10px;
+        }
+        .custom-card {
+            width: 98%; 
+        }
+    </style>
+
+    <script>
+        document.querySelectorAll('.more-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const moreInfo = button.parentElement.querySelector('.more-info');
+                moreInfo.style.display = moreInfo.style.display === 'none' ? 'block' : 'none';
+                button.textContent = moreInfo.style.display === 'none' ? 'Show more' : 'Show less'; 
+            });
+        });
+    </script>
+
+{% endblock %}

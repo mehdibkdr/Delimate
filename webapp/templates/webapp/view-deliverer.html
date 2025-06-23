@@ -1,0 +1,44 @@
+{% extends 'webapp/base.html' %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <div class="card mb-3 custom-card" style="background-color: #ffffff; border-color: #BA5112; margin-top: 50px;">
+            <div class="card-body">
+                <h2 class="card-title text-center" style="color: #BA5112;">{{ deliverer.full_name }}</h2><br>
+                <p class="card-text"><strong>Working Status:</strong> 
+                    {% if deliverer.is_working %}
+                        <span>On a delivery</span>
+                    {% else %}
+                        <span>Available</span>
+                    {% endif %}
+                </p>
+                <p class="card-text"><strong>Age:</strong> {{ deliverer.age }}</p>
+                <p class="card-text"><strong>Address:</strong> {{ deliverer.address }}</p>
+                <p class="card-text"><strong>Phone Number:</strong> {{ deliverer.phone_number }}</p>
+
+                    <br>
+                    <div class="text-center">
+                        <a href="{% url 'deliverers_dashboard' %}" class="btn" style="width: 110px; background-color: #ffffff; border-color: #BA5112; color: rgb(0, 0, 0);"> <strong>Return</strong> &nbsp;</a>
+
+                        &nbsp;
+
+                        <a href="{% url 'update_deliverer' deliverer.id %}" class="btn" style="width: 110px; background-color: #BA5112; border-color: #BA5112; color: rgb(0, 0, 0);"><strong>Update</strong> &nbsp;</a>
+                        
+                        &nbsp;
+
+                        <a href="{% url 'delete_deliverer' deliverer.id %}" class="btn" style="width: 110px; background-color: #BA5112; border-color: #BA5112; color: rgb(0, 0, 0);"> <strong>Delete</strong> &nbsp;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+
+
+
+{% endblock %}
+

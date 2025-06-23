@@ -1,0 +1,45 @@
+{% extends 'webapp/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="container bg-light shadow-md p-5 form-layout">    
+
+    <form method="POST" autocomplete="off">
+        {% csrf_token %}
+        <h3 class="record-heading">Update Deliverer</h3>
+        <hr>
+        <div class="row">
+            <div class="col-md-6">
+                {{ form.full_name|as_crispy_field }}
+                <br>
+                {{ form.age|as_crispy_field }}
+                <br>
+            </div>
+
+            <div class="col-md-6">
+                {{ form.address|as_crispy_field }}
+                <br>
+                {{ form.phone_number|as_crispy_field }}
+                <br>
+                <div class="d-flex justify-content-between add">
+                    <button type="submit" class="btn" style="width: 110px; background-color: #EDB046; border-color: #EDB046; color: rgb(0, 0, 0);"> 
+                        <strong>Save</strong>
+                    </button>                    
+                    <a href="{% url 'deliverers_dashboard' %}" class="btn" style="width: 110px; background-color: #ffffff; border-color: #EDB046; color: rgb(0, 0, 0);"> 
+                        <strong>Cancel</strong>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+        
+    </form>
+</div>
+
+<br>
+
+{% endblock %}

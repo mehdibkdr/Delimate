@@ -1,0 +1,91 @@
+{% extends 'webapp/base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+    <div class="container-fluid greeting-container">
+        <div class="row">
+            <div class="col-md-12">
+                <img src="{% static 'imgs/dashboardy.png' %}" alt="Delivery Man Image" class="img-fluid" style="width: 80%; margin-left: 150px;">
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-12">
+                <h3 style="font-weight: bold; font-size: 24px;">Todays Tasks</h3>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <table class="table table-hover table-bordered">
+
+                <thead class="table-light">
+        
+                    <tr>
+                        <th scope="col"> Date </th>
+                        <th scope="col"> Delivery Man </th>
+                        <th scope="col"> Client Address </th>
+                        <th scope="col"> Client Name </th>
+                        <th scope="col"> Client Phone </th>
+                        <th scope="col"> Price </th>
+                        <th scope="col"> View </th>
+                    </tr>
+        
+                </thead>
+        
+                <tbody>
+        
+                {% if records %}
+        
+                    {% for record in records %}
+        
+                    <tr>
+                        <td> {{record.creation_date}} </td>        
+                        <td> {{record.delivery_man}} </td>
+                        <td> {{record.client_address}} </td>
+                        <td> {{record.client_name}} </td>
+                        <td> {{record.client_phone}} </td>
+                        <td> {{record.price}} </td>           
+                        <td> <a class="btn btn-sm" style="background-color: #EDB046; border-color: #EDB046; color: rgb(0, 0, 0);" href="{% url 'record' record.id %}"> <i class="fa fa-eye" aria-hidden="true"></i> </a> </td>
+        
+                    </tr>
+        
+                    {% endfor %}
+                
+                {% endif %}
+        
+        
+                </tbody>
+        
+        
+            </table>
+        </div>
+    </div>
+    <hr>
+
+    <style>
+        .greeting-container {
+            padding: 15px 0; 
+            margin-bottom: 15px;
+        }
+        .more-button {
+            float: right; 
+            margin-bottom: 10px;
+        }
+        .custom-card {
+            width: 98%; 
+        }
+    </style>
+
+    <script>
+        document.querySelectorAll('.more-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const moreInfo = button.parentElement.querySelector('.more-info');
+                moreInfo.style.display = moreInfo.style.display === 'none' ? 'block' : 'none';
+                button.textContent = moreInfo.style.display === 'none' ? 'Show more' : 'Show less'; 
+            });
+        });
+    </script>
+
+{% endblock %}
