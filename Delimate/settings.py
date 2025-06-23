@@ -132,3 +132,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Custom User Model
 AUTH_USER_MODEL = 'webapp.User'
+
+ALLOWED_HOSTS = ['delimate-webapp.azurewebsites.net']
