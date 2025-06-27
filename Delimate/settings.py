@@ -138,5 +138,7 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
 ]
-
+CSRF_TRUSTED_ORIGINS = [
+    "https://delimate-hheffye6eggebefj.canadacentral-01.azurewebsites.net",
+]
 
