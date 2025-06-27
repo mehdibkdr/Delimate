@@ -1,36 +1,47 @@
-name: Build, Push Docker image and Deploy to Azure Web App
+name: Build and Deploy Docker Image to Azure Web App
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  IMAGE_NAME: your-dockerhub-username/my-image-name
+  AZURE_WEBAPP_NAME: Delimate
+  AZURE_SLOT_NAME: production
 
 jobs:
-  build-and-deploy:
+  build_and_deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Build Docker image
-      run: |
-        IMAGE_TAG=${{ secrets.DOCKERHUB_USERNAME }}/my-image-name:${{ github.sha }}
-        docker build -t $IMAGE_TAG .
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Log in to Docker Hub
-      uses: docker/login-action@v2
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build Docker image
+        run: |
+          IMAGE_TAG=${{ env.IMAGE_NAME }}:$(date +%s)
+          echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
+          docker build -t $IMAGE_TAG .
 
-    - name: Push Docker image to Docker Hub
-      run: |
-        IMAGE_TAG=${{ secrets.DOCKERHUB_USERNAME }}/my-image-name:${{ github.sha }}
-        docker push $IMAGE_TAG
+      - name: Push Docker image
+        run: |
+          docker push $IMAGE_TAG
 
-    - name: Deploy to Azure Web App for Containers
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: Delimate   # Your Azure Web App name
-        images: ${{ secrets.DOCKERHUB_USERNAME }}/my-image-name:${{ github.sha }}
-        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          images: ${{ env.IMAGE_TAG }}
+          slot-name: ${{ env.AZURE_SLOT_NAME }}
