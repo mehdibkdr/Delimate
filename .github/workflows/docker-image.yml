@@ -15,7 +15,7 @@ jobs:
     - name: Build Docker image
       run: |
         IMAGE_TAG=${{ secrets.DOCKERHUB_USERNAME }}/my-image-name:${{ github.sha }}
-        docker build -f docker/Dockerfile -t $IMAGE_TAG docker/
+        docker build -t $IMAGE_TAG .
 
     - name: Log in to Docker Hub
       uses: docker/login-action@v2
@@ -31,6 +31,6 @@ jobs:
     - name: Deploy to Azure Web App for Containers
       uses: azure/webapps-deploy@v2
       with:
-        app-name: Delimate   # Replace with your Azure Web App name
+        app-name: Delimate   # Your Azure Web App name
         images: ${{ secrets.DOCKERHUB_USERNAME }}/my-image-name:${{ github.sha }}
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
