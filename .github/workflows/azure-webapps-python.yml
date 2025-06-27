@@ -1,8 +1,8 @@
 name: Build and deploy Python app to Azure Web App
 
 env:
-  AZURE_WEBAPP_NAME: Delimate  # Set this to your Azure Web App name
-  PYTHON_VERSION: '3.8'        # Set your Python version
+  AZURE_WEBAPP_NAME: Delimate  # Your Azure Web App name
+  PYTHON_VERSION: '3.8'        # Python version to use
 
 on:
   push:
@@ -24,7 +24,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-          # cache: 'pip'  # Uncomment this if you want pip caching (may cause 503 errors sometimes)
+          # cache: 'pip'  # Uncomment to enable pip caching if desired
 
       - name: Create and activate virtual environment
         run: |
@@ -34,7 +34,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      # Optional: add test steps here
+      # Optional: Add your test steps here
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
@@ -50,7 +50,7 @@ jobs:
     permissions:
       contents: none
     environment:
-      name: 'Development'  # Make sure this environment exists in your repo settings
+      name: 'Development'  # Make sure this environment exists in GitHub repo settings
 
     steps:
       - name: Download build artifact
@@ -66,6 +66,5 @@ jobs:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
 
-      # Example of new-style output setting if you want to expose deployment URL (optional)
       - name: Set deployment URL output
         run: echo "webapp-url=https://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net" >> $GITHUB_OUTPUT
