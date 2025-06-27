@@ -1,8 +1,8 @@
 name: Build and deploy Python app to Azure Web App
 
 env:
-  AZURE_WEBAPP_NAME: Delimate  # Your Azure Web App name
-  PYTHON_VERSION: '3.8'        # Python version to use
+  AZURE_WEBAPP_NAME: Delimate
+  PYTHON_VERSION: '3.8'
 
 on:
   push:
@@ -15,29 +15,20 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-          # cache: 'pip'  # Enable if you want pip caching
 
-      - name: Create and activate virtual environment
-        run: |
+      - run: |
           python -m venv venv
           source venv/bin/activate
 
-      - name: Install dependencies
-        run: pip install -r requirements.txt
+      - run: pip install -r requirements.txt
 
-      # Optional: Add your test steps here
-
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: python-app
           path: |
@@ -50,17 +41,14 @@ jobs:
     permissions:
       contents: none
     environment:
-      name: 'Development'  # Ensure this environment exists in your GitHub repo settings
-
+      name: 'Development'
     steps:
-      - name: Download build artifact
-        uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v4
         with:
           name: python-app
           path: .
 
-      - name: Deploy to Azure Web App
-        uses: azure/webapps-deploy@v2
+      - uses: azure/webapps-deploy@v1
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
