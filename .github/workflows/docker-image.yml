@@ -1,39 +1,36 @@
-name: Docker Image CI
+name: Build, Push Docker image and Deploy to Azure Web App
 
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-      - name: Build Docker image
-        run: |
-          IMAGE_TAG=my-image-name:$(date +%s)
-          docker build . -f Dockerfile -t $IMAGE_TAG
-          echo "Built image $IMAGE_TAG"
+    - name: Build Docker image
+      run: |
+        IMAGE_TAG=${{ secrets.DOCKERHUB_USERNAME }}/my-image-name:${{ github.sha }}
+        docker build -t $IMAGE_TAG .
 
-      # Optional: Log in to Docker Hub or Azure Container Registry (ACR)
-      # - name: Log in to Docker Hub
-      #   uses: docker/login-action@v2
-      #   with:
-      #     username: ${{ secrets.DOCKERHUB_USERNAME }}
-      #     password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # - name: Push Docker image
-      #   run: |
-      #     docker push $IMAGE_TAG
+    - name: Push Docker image to Docker Hub
+      run: |
+        IMAGE_TAG=${{ secrets.DOCKERHUB_USERNAME }}/my-image-name:${{ github.sha }}
+        docker push $IMAGE_TAG
 
-      # Optional: Deploy to Azure Web App for Containers
-      # - name: Deploy to Azure Web App
-      #   uses: azure/webapps-deploy@v2
-      #   with:
-      #     app-name: ${{ env.AZURE_WEBAPP_NAME }}
-      #     images: $IMAGE_TAG
-      #     publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+    - name: Deploy to Azure Web App for Containers
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: Delimate   # Replace with your Azure Web App name
+        images: ${{ secrets.DOCKERHUB_USERNAME }}/my-image-name:${{ github.sha }}
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
