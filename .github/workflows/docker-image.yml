@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-  IMAGE_NAME: your-dockerhub-username/my-image-name
+  IMAGE_NAME: mehdibkr/delimate
   AZURE_WEBAPP_NAME: Delimate
   AZURE_SLOT_NAME: production
 
